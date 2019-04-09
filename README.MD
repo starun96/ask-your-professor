@@ -1,9 +1,9 @@
 # **Ask Your Professor** 
 
 ## Summary
-Ask Your Professor is an instant messaging app that facilitates Q&A sessions between students and professors. Right now, this app only works with UVA classes (with access to the Lou's List API) and has only been tested on the Samsung Galaxy Note 8 (although it might work with other Android phones)
+Ask Your Professor is an Google Firebase-powered instant messaging app that facilitates Q&A sessions between students and professors. Right now, this app only works with UVA classes (with access to the Lou's List API) and has only been tested on the Samsung Galaxy Note 8 (although it might work with other Android devices). 
 
-## Original Contributors:** 
+## Original Contributors:
 Tarun Saharya and Salman Guliwala
 
 ## Description:
