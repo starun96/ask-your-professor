@@ -39,13 +39,13 @@ class MessageFeedActivity : AppCompatActivity() {
         val sectionMessagesRoot = remoteDb.child("messages").child(section.id.toString())
         // add new messages to list as soon as they come
         sectionMessagesRoot.addChildEventListener(object : ChildEventListener {
-            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
             }
 
-            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
             }
 
-            override fun onChildRemoved(p0: DataSnapshot?) {
+            override fun onChildRemoved(p0: DataSnapshot) {
             }
 
             override fun onCancelled(error: DatabaseError) {
