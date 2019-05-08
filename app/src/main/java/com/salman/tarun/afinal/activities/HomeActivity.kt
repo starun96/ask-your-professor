@@ -53,6 +53,21 @@ class HomeActivity : AppCompatActivity() {
             imageUser.rotation = rotation
         }
 
+        val localDb = SectionDbHelper(this, computingID)
+
+        val writableDb = localDb.writableDatabase
+
+        val sectionValues = ContentValues().apply {
+            put("id", "112233445566")
+            put("human_id", "CS 9999")
+            put("course_name", "Test Class")
+            put("instructor", "Tarun Saharya")
+            put("location", "116 Chelsea Dr")
+            put("meeting_time",  "2-3 PM")
+        }
+        writableDb?.insert("sections", null, sectionValues)
+        localDb.close()
+
         var mySections = mutableListOf<Section>()
 
         if (savedInstanceState == null) {
