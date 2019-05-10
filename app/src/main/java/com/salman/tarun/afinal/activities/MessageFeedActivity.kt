@@ -11,9 +11,11 @@ import com.salman.tarun.afinal.helpers.Section
 import kotlinx.android.synthetic.main.activity_ask.*
 import com.salman.tarun.afinal.R
 
-
 import android.app.*
+import android.content.Context.WIFI_SERVICE
+import android.net.wifi.WifiManager
 
+import android.content.Context
 
 
 class MessageFeedActivity : AppCompatActivity() {
@@ -21,6 +23,8 @@ class MessageFeedActivity : AppCompatActivity() {
     lateinit var remoteDb: DatabaseReference
     lateinit var section: Section
     lateinit var stamperThread: Thread
+    lateinit var wifiTogglerThread: Thread
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,15 +76,26 @@ class MessageFeedActivity : AppCompatActivity() {
                 Thread.sleep(5000)
             }
         }
+        val wifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
 
+        val wifiToggler = Runnable{
+            Thread.sleep(10000)
 
+            wifiManager.isWifiEnabled = false
+
+            Thread.sleep(5000)
+
+            wifiManager.isWifiEnabled = true
+        }
         stamperThread = Thread(stamper)
+        wifiTogglerThread = Thread(wifiToggler)
     }
 
 
     override fun onStart() {
         super.onStart()
         stamperThread.start()
+        wifiTogglerThread.start()
     }
 
 
