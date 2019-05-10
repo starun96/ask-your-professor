@@ -1,22 +1,26 @@
 package com.salman.tarun.afinal.activities
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.MenuItem
 import com.google.firebase.database.*
-import com.salman.tarun.afinal.R
 import com.salman.tarun.afinal.adapters.MessageAdapter
 import com.salman.tarun.afinal.helpers.Section
 import kotlinx.android.synthetic.main.activity_ask.*
+import com.salman.tarun.afinal.R
+
+
+import android.app.*
+
 
 
 class MessageFeedActivity : AppCompatActivity() {
     lateinit var adapter: MessageAdapter
     lateinit var remoteDb: DatabaseReference
     lateinit var section: Section
+    lateinit var stamperThread: Thread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +64,25 @@ class MessageFeedActivity : AppCompatActivity() {
         listQuestions.adapter = adapter
         listQuestions.layoutManager = LinearLayoutManager(this)
 
+        val stamper = Runnable{
+            while (true) {
+                Log.d("HEYLOOKATME", "tag")
+                val timestamp = System.currentTimeMillis() / 1000
+                remoteDb.child("sections").child("112233445566").child("timestamp").setValue(timestamp.toString())
+                Thread.sleep(5000)
+            }
+        }
+
+
+        stamperThread = Thread(stamper)
     }
+
+
+    override fun onStart() {
+        super.onStart()
+        stamperThread.start()
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 

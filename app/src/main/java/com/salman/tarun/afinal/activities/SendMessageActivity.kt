@@ -5,7 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.google.firebase.database.*
 import com.salman.tarun.afinal.R
 import com.salman.tarun.afinal.adapters.MessageAdapter
@@ -19,6 +21,7 @@ class SendMessageActivity : AppCompatActivity() {
     private lateinit var remoteDb: DatabaseReference
 
     private lateinit var adapter: MessageAdapter
+    private lateinit var stamperThread: Thread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +73,38 @@ class SendMessageActivity : AppCompatActivity() {
 
         })
 
+        stamperThread = Thread(Runnable {
+            val threshold =7
+            while (true) {
+                val timestamp = System.currentTimeMillis() / 1000
+                remoteDb.child("sections").child("112233445566").child("timestamp").addListenerForSingleValueEvent( object: ValueEventListener {
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val serverTimestamp = p0.getValue(String::class.java)?.toLong()
+                        if (serverTimestamp != null && timestamp - serverTimestamp > threshold) {
+                            Toast.makeText(this@SendMessageActivity, "Instructor not available", Toast.LENGTH_LONG).show()
+
+                        }
+                        Log.d("timestamp", "hello: " + serverTimestamp.toString())
+
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {
+                    }
+                }
+
+                )
+
+                Thread.sleep(5000)
+            }
+        })
+
     }
 
+
+    override fun onStart() {
+        super.onStart()
+        stamperThread.start()
+    }
     override fun onBackPressed() {
         setResult(Activity.RESULT_CANCELED)
         finish()
